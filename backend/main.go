@@ -1,18 +1,15 @@
-// main.go
 package main
 
 import (
     "github.com/gin-gonic/gin"
-    "dedede-syllabus/routes"
 )
 
 func main() {
-    router := gin.Default()
-
-    // 各テスト用ルート
-    router.GET("/regex-test", routes.RegexTest)
-    router.GET("/sql-test", routes.SqlTest)
-    router.GET("/ajax-test", routes.AjaxTest)
-
-    router.Run(":8080")
+    r := gin.Default()
+    r.GET("/api/tests", func(c *gin.Context) {
+        c.JSON(200, gin.H{
+            "tests": []string{"Regex Test", "SQL Test", "AJAX Test"},
+        })
+    })
+    r.Run() // デフォルトで :8080 ポート
 }

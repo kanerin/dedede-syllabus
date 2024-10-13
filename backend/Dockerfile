@@ -1,12 +1,15 @@
-# Backend Dockerfile
-FROM golang:1.19-alpine
+FROM golang:1.23-alpine
 
 WORKDIR /app
 
-COPY . .
-
+COPY go.mod ./
+COPY go.sum ./
 RUN go mod download
 
-RUN go build -o main .
+COPY . .
 
-CMD ["/app/main"]
+RUN go build -o /dedede-syllabus
+
+EXPOSE 8080
+
+CMD ["/dedede-syllabus"]
