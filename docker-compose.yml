@@ -18,3 +18,17 @@ services:
       - /app/node_modules  # node_modulesをローカルと分離
     stdin_open: true
     tty: true
+
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dedede_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db_data:
