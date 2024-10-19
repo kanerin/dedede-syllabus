@@ -5,7 +5,7 @@ import (
     "github.com/gin-contrib/cors"
     "gorm.io/gorm"
     "gorm.io/driver/postgres"
-    "dedede-syllabus/controllers"
+    "dedede-syllabus/controllers"  // controllers のパッケージをインポート
     "dedede-syllabus/models"
     "log"
     "time"
@@ -43,6 +43,9 @@ func main() {
             "tests": []string{"Regex Test", "SQL Test", "AJAX Test"},
         })
     })
+
+    // 正規表現の問題エンドポイントを追加
+    r.GET("/api/regex-tests", controllers.GetRegexQuestions)  // 追加
 
     // 認証エンドポイント
     r.POST("/register", controllers.Register)

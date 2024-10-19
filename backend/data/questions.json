@@ -1,0 +1,203 @@
+[
+    {
+        "id": 1,
+        "difficulty": "low",
+        "question": "英大文字のみをマッチさせる正規表現を記述してください。",
+        "string": "HtJKl QAWQE HrtrN WERT XhCwE iutJG KLMeZ HOOOL JWWKO WZXCV",
+        "expectedMatches": [
+            "QAWQE",
+            "WERT",
+            "HOOOL",
+            "JWWKO",
+            "WZXCV"
+        ],
+        "nonMatchingStrings": [
+            "HtJKl",
+            "HrtrN",
+            "XhCwE",
+            "iutJG",
+            "KLMeZ"
+        ]
+    },
+    {
+        "id": 2,
+        "difficulty": "medium",
+        "question": "小文字のアルファベットのみをマッチさせる正規表現を記述してください。",
+        "string": "bqwE AWseT aZXbz uiopM Lsjkq EoPqrF jklmn yYJvV rStuv aKJLo",
+        "expectedMatches": [
+            "jklmn",
+            "rStuv"
+        ],
+        "nonMatchingStrings": [
+            "bqwE",
+            "AWseT",
+            "aZXbz",
+            "uiopM",
+            "Lsjkq",
+            "EoPqrF",
+            "yYJvV",
+            "aKJLo"
+        ]
+    },
+    {
+        "id": 3,
+        "difficulty": "low",
+        "question": "数字のみをマッチさせる正規表現を記述してください。",
+        "string": "2 6 NuRTL tz2SV eCcxQ TMRDl 9kGGg gp8SZ 5lYXZ gITbB pQ5ZQ E886P InG3u rE0OQ p4clV 3NCTB Y0ecj",
+        "expectedMatches": [
+            "2",
+            "6"
+        ],
+        "nonMatchingStrings": [
+            "NuRTL",
+            "tz2SV",
+            "eCcxQ",
+            "TMRDl",
+            "9kGGg",
+            "gp8SZ",
+            "5lYXZ",
+            "gITbB",
+            "pQ5ZQ",
+            "E886P",
+            "InG3u",
+            "rE0OQ",
+            "p4clV",
+            "3NCTB",
+            "Y0ecj"
+        ]
+    },
+    {
+        "id": 4,
+        "difficulty": "high",
+        "question": "3桁の数字をマッチさせる正規表現を記述してください。",
+        "string": "123 abc456 789def ghi012 jkl345 678 abcde90 9012 abc567",
+        "expectedMatches": [
+            "123",
+            "456",
+            "789",
+            "012",
+            "345",
+            "678"
+        ],
+        "nonMatchingStrings": [
+            "abc456",
+            "789def",
+            "ghi012",
+            "abcde90",
+            "9012",
+            "abc567"
+        ]
+    },
+    {
+        "id": 5,
+        "difficulty": "medium",
+        "question": "アルファベットと数字が混ざった文字列で、最初の2文字が大文字、最後が数字である文字列をマッチさせる正規表現を記述してください。",
+        "string": "AB12 CD34 EF56 G7HI jk23 KMNOP qr99 st45 UV67 WY90",
+        "expectedMatches": [
+            "AB12",
+            "CD34",
+            "EF56",
+            "UV67",
+            "WY90"
+        ],
+        "nonMatchingStrings": [
+            "G7HI",
+            "jk23",
+            "KMNOP",
+            "qr99",
+            "st45"
+        ]
+    },
+    {
+        "id": 6,
+        "difficulty": "high",
+        "question": "先頭に\"abc\"が含まれている文字列のみをマッチさせる正規表現を記述してください。",
+        "string": "abcd efgh ijkl abcdef mnop abcxyz qrst abcde uvwxy",
+        "expectedMatches": [
+            "abcd",
+            "abcdef",
+            "abcxyz",
+            "abcde"
+        ],
+        "nonMatchingStrings": [
+            "efgh",
+            "ijkl",
+            "mnop",
+            "qrst",
+            "uvwxy"
+        ]
+    },
+    {
+        "id": 7,
+        "difficulty": "low",
+        "question": "数字が2つ含まれている文字列のみをマッチさせる正規表現を記述してください。",
+        "string": "a1b2 c3d e4f5 g6h7 123 89p qr22s t98u",
+        "expectedMatches": [
+            "a1b2",
+            "e4f5",
+            "g6h7",
+            "t98u"
+        ],
+        "nonMatchingStrings": [
+            "c3d",
+            "123",
+            "89p",
+            "qr22s"
+        ]
+    },
+    {
+        "id": 8,
+        "difficulty": "medium",
+        "question": "最後の文字が小文字のアルファベットである文字列をマッチさせる正規表現を記述してください。",
+        "string": "xYZabc qRtuv FGHi mnop rsTuvw xyZXop QRStuv abcw",
+        "expectedMatches": [
+            "xYZabc",
+            "qRtuv",
+            "mnop",
+            "rsTuvw",
+            "QRStuv"
+        ],
+        "nonMatchingStrings": [
+            "FGHi",
+            "xyZXop",
+            "abcw"
+        ]
+    },
+    {
+        "id": 9,
+        "difficulty": "high",
+        "question": "英大文字と小文字が交互に出現する文字列をマッチさせる正規表現を記述してください。",
+        "string": "aBcD xYzW ABcd XYzw mnOP qrST UVwx KlMn JoKe",
+        "expectedMatches": [
+            "aBcD",
+            "xYzW"
+        ],
+        "nonMatchingStrings": [
+            "ABcd",
+            "XYzw",
+            "mnOP",
+            "qrST",
+            "UVwx",
+            "KlMn",
+            "JoKe"
+        ]
+    },
+    {
+        "id": 10,
+        "difficulty": "medium",
+        "question": "数字のみを含む文字列をマッチさせる正規表現を記述してください。",
+        "string": "123 456 789 01234 56789 abc123 def456 ghi789",
+        "expectedMatches": [
+            "123",
+            "456",
+            "789",
+            "01234",
+            "56789"
+        ],
+        "nonMatchingStrings": [
+            "abc123",
+            "def456",
+            "ghi789"
+        ]
+    }
+]

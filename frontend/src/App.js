@@ -6,6 +6,7 @@ import AjaxTest from './pages/AjaxTest';
 import LoginForm from './components/LoginForm';
 import Message from './components/Message';
 import Register from './pages/Register';
+import ResultPage from './pages/ResultPage'; // 結果ページのインポート
 
 function Home() {
   return <h1>Welcome to the Test Pages</h1>;
@@ -79,16 +80,15 @@ function App() {
           <Route path="/regex" element={<RegexTest />} />
           <Route path="/sql" element={<SQLTest />} />
           <Route path="/ajax" element={<AjaxTest />} />
-          <Route
-            path="/login"
-            element={
+          <Route path="/login" element={
               <div>
                 <LoginForm onLogin={handleLogin} />
                 <Message message={message} />
               </div>
-            }
+            } 
           />
           <Route path="/register" element={<Register />} />
+          <Route path="/results" element={<ResultPage />} /> {/* 結果発表ページのルート追加 */}
         </Routes>
       </div>
     </Router>
