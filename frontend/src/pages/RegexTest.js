@@ -32,6 +32,11 @@ const RegexTest = () => {
 
     questions.forEach((question) => {
       try {
+        if (!answers[question.id]) {
+          newResults[question.id] = 'No input'; // 正規表現が空の場合の処理
+          return;
+        }
+
         const re = new RegExp(answers[question.id]);
         const matches = question.string
           .split(' ')
@@ -40,7 +45,7 @@ const RegexTest = () => {
         const isCorrect = JSON.stringify(matches) === JSON.stringify(question.expectedMatches);
         newResults[question.id] = isCorrect ? 'OK' : 'NG';
       } catch (error) {
-        newResults[question.id] = 'Invalid regex';
+        newResults[question.id] = 'Invalid regex'; // 正規表現エラーを捕捉
       }
     });
 
@@ -48,18 +53,25 @@ const RegexTest = () => {
   };
 
   // ハイライトされた単語を表示
-  const highlightMatches = (text, regex) => {
+  const highlightMatches = (text, regexString) => {
+    let regex;
+    try {
+      if (!regexString) {
+        return text.split(' ').map((word, index) => <span key={index}>{word} </span>); // 入力がない場合はハイライトしない
+      }
+
+      regex = new RegExp(regexString);
+    } catch (error) {
+      return text.split(' ').map((word, index) => <span key={index}>{word} </span>); // 無効な正規表現の場合はハイライトしない
+    }
+
     const words = text.split(' ');
     return words.map((word, index) => {
-      if (regex && regex.test(word)) {
-        return (
-          <span key={index} style={{ backgroundColor: 'yellow' }}>{word}</span> // スペースを含まない
-        );
+      if (regex.test(word)) {
+        return <span key={index} style={{ backgroundColor: 'yellow' }}>{word}</span>; // マッチした単語をハイライト
       }
-      return (
-        <span key={index}>{word}</span>
-      );
-    }).reduce((prev, curr) => [prev, ' ', curr]); // 単語間のスペースを再度追加
+      return <span key={index}>{word}</span>;
+    }).reduce((prev, curr) => [prev, ' ', curr]); // 単語間のスペースを再追加
   };
 
   return (
@@ -73,7 +85,7 @@ const RegexTest = () => {
               <h3>{question.question}</h3>
               <p>
                 {/* 正規表現に基づいてマッチした部分をハイライト */}
-                {highlightMatches(question.string, answers[question.id] ? new RegExp(answers[question.id]) : null)}
+                {highlightMatches(question.string, answers[question.id] || '')}
               </p>
               <input
                 type="text"
