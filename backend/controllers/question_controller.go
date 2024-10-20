@@ -13,7 +13,7 @@ import (
 // 問題データをJSONから読み込む
 func LoadQuestions() []models.Question {
     var questions []models.Question
-    data, err := ioutil.ReadFile("data/questions.json")
+    data, err := ioutil.ReadFile("data/regex_test_questions.json")
     if err != nil {
         panic(err)
     }
