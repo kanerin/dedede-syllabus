@@ -1,0 +1,55 @@
+{
+  "categories": [
+    {
+      "name": "1. 比較演算子の問題",
+      "questions": [
+        {"id": 11, "question": "itemsテーブルから値段が200円以上の商品を抽出してください"},
+        {"id": 12, "question": "Ordersテーブルから受注数が10個より少ないレコードを抽出してください"},
+        {"id": 13, "question": "itemsテーブルから値段が100円の果物の名前のみを抽出してください"},
+        {"id": 14, "question": "itemsテーブルから名前に_Melonを含む商品のみを抽出してください"}
+      ]
+    },
+    {
+      "name": "2. Joinの問題",
+      "questions": [
+        {"id": 21, "question": "ItemsテーブルとOrdersテーブルを内部結合してください"},
+        {"id": 22, "question": "ItemsテーブルとOrdersテーブルを左外部結合してください"},
+        {"id": 23, "question": "ItemsテーブルとOrdersテーブルを内部結合した上で、amountカラムが20個以上のレコードを抽出してください"}
+      ]
+    },
+    {
+      "name": "3. group byと集約関数の問題",
+      "questions": [
+        {"id": 31, "question": "Ordersテーブルのitem_idごとに集約してitem_idを出してください"},
+        {"id": 32, "question": "Itemsテーブルを値段で集約し、値段とレコード数を出してください"},
+        {"id": 33, "question": "Ordersテーブルをitem_idごとで集約してitem_idが2以上のitem_idと個数の合計を出してください"}
+      ]
+    },
+    {
+      "name": "4. havingと集約関数の問題",
+      "questions": [
+        {"id": 41, "question": "Ordersテーブルのitem_idごとに集約し、個数の最大値が10個未満のレコードのitem_idと個数の最大値を出してください"},
+        {"id": 42, "question": "itemsテーブルをpriceごとで集約し、レコード数の合計が1個より大きいもののpriceとレコード数を出してください"},
+        {"id": 43, "question": "Ordersテーブルをitem_idごとで集約し、個数の平均が8個以上のitem_idと平均の個数を出してください"}
+      ]
+    },
+    {
+      "name": "5. update、deleteの問題",
+      "questions": [
+        {"id": 51, "question": "リンゴの値段を100円に変更してください"},
+        {"id": 52, "question": "Ordersテーブルのid=6のレコードの個数を20個に変更してください"},
+        {"id": 53, "question": "Ordersテーブルのid=8のレコードを削除してください"},
+        {"id": 54, "question": "トランザクションをした上でitemsテーブルのID=3の名称をMelonに修正し、コミットしてください"},
+        {"id": 55, "question": "トランザクションをした上でitemsテーブルのID=1,2のレコードを削除し、ロールバックしてください"}
+      ]
+    },
+    {
+      "name": "6. サブクエリの問題",
+      "questions": [
+        {"id": 61, "question": "商品の値段が150円より高い商品にOrdersテーブルのレコードを抽出してください"},
+        {"id": 62, "question": "受注数の平均が10個未満の商品テーブルのレコードを抽出してください"},
+        {"id": 63, "question": "受注数の合計が20個以上の商品名を抽出してください"}
+      ]
+    }
+  ]
+}

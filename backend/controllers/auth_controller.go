@@ -10,8 +10,6 @@ import (
     "github.com/golang-jwt/jwt/v4"
 )
 
-var DB *gorm.DB
-
 // JWT署名キー
 var jwtKey = []byte("my_secret_key")
 
@@ -41,7 +39,7 @@ func generateJWT(username string) (string, error) {
 }
 
 // ユーザー登録処理
-func Register(c *gin.Context) {
+func Register(c *gin.Context, db *gorm.DB) {
     var user models.User
     if err := c.ShouldBindJSON(&user); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -50,7 +48,7 @@ func Register(c *gin.Context) {
 
     // ユーザーがすでに存在するかをチェック
     var existingUser models.User
-    if err := DB.Where("username = ?", user.Username).First(&existingUser).Error; err == nil {
+    if err := db.Where("username = ?", user.Username).First(&existingUser).Error; err == nil {
         c.JSON(http.StatusConflict, gin.H{"error": "Username already exists"})
         return
     }
@@ -64,7 +62,7 @@ func Register(c *gin.Context) {
     user.Password = hashedPassword
 
     // ユーザーの作成
-    if err := DB.Create(&user).Error; err != nil {
+    if err := db.Create(&user).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
         return
     }
@@ -73,9 +71,9 @@ func Register(c *gin.Context) {
 }
 
 // ログイン処理
-func Login(c *gin.Context) {
-    var user models.User
+func Login(c *gin.Context, db *gorm.DB) {
     var input models.User
+    var user models.User
 
     if err := c.ShouldBindJSON(&input); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -83,7 +81,7 @@ func Login(c *gin.Context) {
     }
 
     // ユーザー名で検索
-    if err := DB.Where("username = ?", input.Username).First(&user).Error; err != nil {
+    if err := db.Where("username = ?", input.Username).First(&user).Error; err != nil {
         c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
         return
     }
@@ -113,6 +111,9 @@ func AuthenticateJWT() gin.HandlerFunc {
             c.Abort()
             return
         }
+
+        // Bearerトークン形式であるかを確認
+        tokenString = tokenString[len("Bearer "):]
 
         token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
             return jwtKey, nil
