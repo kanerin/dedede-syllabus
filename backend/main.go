@@ -6,7 +6,7 @@ import (
     "gorm.io/gorm"
     "gorm.io/driver/postgres"
     "dedede-syllabus/controllers"  // controllers のパッケージをインポート
-    // "dedede-syllabus/models"
+    "dedede-syllabus/models"
     "log"
     "time"
 )
