@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap'; // Bootstrapのコンポーネントを追加
+import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap';
 
 const RegexTest = () => {
   const [questions, setQuestions] = useState([]);
@@ -34,7 +34,7 @@ const RegexTest = () => {
     questions.forEach((question) => {
       try {
         if (!answers[question.id]) {
-          newResults[question.id] = 'No input';
+          newResults[question.id] = { result: 'No input', userAnswer: '' }; // 修正: 回答内容も保存
           return;
         }
 
@@ -44,13 +44,16 @@ const RegexTest = () => {
           .filter(word => re.test(word));
 
         const isCorrect = JSON.stringify(matches) === JSON.stringify(question.expectedMatches);
-        newResults[question.id] = isCorrect ? 'OK' : 'NG';
+        newResults[question.id] = {
+          result: isCorrect ? 'OK' : 'NG',
+          userAnswer: answers[question.id], // 修正: 回答内容を保存
+        };
       } catch (error) {
-        newResults[question.id] = 'Invalid regex';
+        newResults[question.id] = { result: 'Invalid regex', userAnswer: answers[question.id] };
       }
     });
 
-    navigate('/results', { state: { results: newResults } });
+    navigate('/results', { state: { results: newResults, questions } }); // 修正: 質問も結果ページに送る
   };
 
   // ハイライトされた単語を表示する関数
@@ -81,9 +84,9 @@ const RegexTest = () => {
       <Form onSubmit={handleSubmit}>
         {questions.length > 0 ? (
           questions.map((question, index) => (
-            <Card key={question.id} className="mb-4"> {/* 各問題をCardで囲む */}
+            <Card key={question.id} className="mb-4">
               <Card.Body>
-                <Card.Title>問題 {index + 1}</Card.Title> {/* 問題番号を追加 */}
+                <Card.Title>問題 {index + 1}</Card.Title>
                 <Card.Text>{question.question}</Card.Text>
                 <p>{highlightMatches(question.string, answers[question.id] || '')}</p>
                 <Form.Group controlId={`formRegex${question.id}`}>
