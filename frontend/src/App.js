@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap'; // React Bootstrapコンポーネントのインポート
 import RegexTest from './pages/RegexTest';
 import SQLTest from './pages/SQLTest';
 import AjaxTest from './pages/AjaxTest';
@@ -10,6 +11,33 @@ import ResultPage from './pages/ResultPage'; // 結果ページのインポー�
 
 function Home() {
   return <h1>Welcome to the Test Pages</h1>;
+}
+
+function NavBar({ isLoggedIn, handleLogout }) {
+  return (
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Container>
+        <Navbar.Brand as={Link} to="/">Test Pages</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/regex">Regex Test</Nav.Link>
+            <Nav.Link as={Link} to="/sql">SQL Test</Nav.Link>
+            <Nav.Link as={Link} to="/ajax">AJAX Test</Nav.Link>
+          </Nav>
+          {isLoggedIn ? (
+            <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
+          ) : (
+            <>
+              <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              <Nav.Link as={Link} to="/register">Register</Nav.Link>
+            </>
+          )}
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 }
 
 function App() {
@@ -39,7 +67,6 @@ function App() {
 
       const data = await response.json();
       if (response.ok) {
-        // トークンをローカルストレージに保存
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
         setMessage(`Welcome, ${data.username}!`);
@@ -54,7 +81,6 @@ function App() {
   };
 
   const handleLogout = () => {
-    // ログアウト時にローカルストレージからトークンを削除
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     setIsLoggedIn(false);
@@ -63,34 +89,23 @@ function App() {
 
   return (
     <Router>
-      <div>
-        <h1>Test Pages</h1>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/regex">Regex Test</Link></li>
-          <li><Link to="/sql">SQL Test</Link></li>
-          <li><Link to="/ajax">AJAX Test</Link></li>
-          {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
-          {!isLoggedIn && <li><Link to="/register">Register</Link></li>}
-          {isLoggedIn && <li><button onClick={handleLogout}>Logout</button></li>} {/* ログアウトボタン */}
-        </ul>
-
+      <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+      <Container className="mt-4">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/regex" element={<RegexTest />} />
           <Route path="/sql" element={<SQLTest />} />
           <Route path="/ajax" element={<AjaxTest />} />
           <Route path="/login" element={
-              <div>
-                <LoginForm onLogin={handleLogin} />
-                <Message message={message} />
-              </div>
-            } 
-          />
+            <div>
+              <LoginForm onLogin={handleLogin} />
+              <Message message={message} />
+            </div>
+          } />
           <Route path="/register" element={<Register />} />
           <Route path="/results" element={<ResultPage />} /> {/* 結果発表ページのルート追加 */}
         </Routes>
-      </div>
+      </Container>
     </Router>
   );
 }
