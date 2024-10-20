@@ -6,23 +6,25 @@ import (
     "gorm.io/gorm"
     "gorm.io/driver/postgres"
     "dedede-syllabus/controllers"  // controllers のパッケージをインポート
-    "dedede-syllabus/models"
+    // "dedede-syllabus/models"
     "log"
     "time"
 )
 
+// GORMのDB接続インスタンス（全体で利用するために定義）
+var db *gorm.DB
+
 func main() {
     // データベース接続設定
     dsn := "host=db user=user password=password dbname=dedede_db port=5432 sslmode=disable"
-    db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    var err error
+    db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})  // dbを初期化
     if err != nil {
         log.Fatal("Failed to connect to database:", err)
     }
 
     // データベースのマイグレーション
     db.AutoMigrate(&models.User{})
-
-    controllers.DB = db
 
     // Ginのルーター設定
     r := gin.Default()
@@ -46,10 +48,21 @@ func main() {
 
     // 正規表現の問題エンドポイントを追加
     r.GET("/api/regex-tests", controllers.GetRegexQuestions)  // 追加
+    // SQLテスト用エンドポイントを追加
+    r.GET("/api/sql-tests", func(c *gin.Context) {
+        controllers.GetSQLQuestions(c, db)
+    })
+    r.POST("/api/submit-sql", func(c *gin.Context) {
+        controllers.SubmitSQLTest(c, db)
+    })
 
     // 認証エンドポイント
-    r.POST("/register", controllers.Register)
-    r.POST("/login", controllers.Login)
+    r.POST("/register", func(c *gin.Context) {
+        controllers.Register(c, db)
+    })
+    r.POST("/login", func(c *gin.Context) {
+        controllers.Login(c, db)
+    })
 
     // サーバー起動
     r.Run(":8080") // デフォルトでポート8080で起動
