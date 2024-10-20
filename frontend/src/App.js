@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap'; // React Bootstrapコンポーネントのインポート
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Container } from 'react-bootstrap'; // React Bootstrapコンポーネントのインポート
 import RegexTest from './pages/RegexTest';
 import SQLTest from './pages/SQLTest';
 import AjaxTest from './pages/AjaxTest';
@@ -8,36 +8,10 @@ import LoginForm from './components/LoginForm';
 import Message from './components/Message';
 import Register from './pages/Register';
 import ResultPage from './pages/ResultPage'; // 結果ページのインポート
+import NavBar from './components/NavBar'; // ナビバーのインポート
 
 function Home() {
   return <h1>Welcome to the Test Pages</h1>;
-}
-
-function NavBar({ isLoggedIn, handleLogout }) {
-  return (
-    <Navbar bg="dark" variant="dark" expand="lg">
-      <Container>
-        <Navbar.Brand as={Link} to="/">Test Pages</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/regex">Regex Test</Nav.Link>
-            <Nav.Link as={Link} to="/sql">SQL Test</Nav.Link>
-            <Nav.Link as={Link} to="/ajax">AJAX Test</Nav.Link>
-          </Nav>
-          {isLoggedIn ? (
-            <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
-          ) : (
-            <>
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
-              <Nav.Link as={Link} to="/register">Register</Nav.Link>
-            </>
-          )}
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
 }
 
 function App() {
