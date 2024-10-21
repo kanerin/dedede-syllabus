@@ -14,6 +14,7 @@ function NavBar({ isLoggedIn, handleLogout }) {
             <Nav.Link as={Link} to="/regex">Regex Test</Nav.Link>
             <Nav.Link as={Link} to="/sql">SQL Test</Nav.Link>
             <Nav.Link as={Link} to="/ajax">AJAX Test</Nav.Link>
+            {isLoggedIn && <Nav.Link as={Link} to="/mypage">My Page</Nav.Link>}
           </Nav>
           <Nav>
             {isLoggedIn ? (

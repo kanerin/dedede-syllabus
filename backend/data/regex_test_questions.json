@@ -73,10 +73,6 @@
         "string": "123 abc456 789def ghi012 jkl345 678 abcde90 9012 abc567",
         "expectedMatches": [
             "123",
-            "456",
-            "789",
-            "012",
-            "345",
             "678"
         ],
         "nonMatchingStrings": [

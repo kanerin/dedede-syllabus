@@ -8,6 +8,8 @@ import LoginForm from './components/LoginForm';
 import Message from './components/Message';
 import Register from './pages/Register';
 import ResultPage from './pages/ResultPage'; // 結果ページのインポート
+import MyPage from './pages/MyPage';
+
 import NavBar from './components/NavBar'; // ナビバーのインポート
 
 function Home() {
@@ -78,6 +80,7 @@ function App() {
           } />
           <Route path="/register" element={<Register />} />
           <Route path="/results" element={<ResultPage />} /> {/* 結果発表ページのルート追加 */}
+          {isLoggedIn && <Route path="/mypage" element={<MyPage />} />} {/* マイページルート */}
         </Routes>
       </Container>
     </Router>
