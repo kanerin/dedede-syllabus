@@ -1,23 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Card, Button, Row, Col } from 'react-bootstrap';
+import { Container, Card, Button, Row, Col, ListGroup, Alert } from 'react-bootstrap';
 
 const MyPage = () => {
   const [user, setUser] = useState(null);
+  const [testResults, setTestResults] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // ログインしたユーザーの情報を取得する
-    const username = localStorage.getItem('username'); // ローカルストレージからユーザー名を取得
-    if (username) {
-      setUser({ username });  // 仮でユーザー名のみ設定
-      // 必要に応じてサーバーから詳細情報を取得できるようにする
-      // fetch('/api/user-info', { headers: { Authorization: `Bearer ${token}` } })
-      //   .then(response => response.json())
-      //   .then(data => setUser(data));
+    const username = localStorage.getItem('username');
+    const userId = localStorage.getItem('user_id');
+    console.log("User ID:", userId);
+
+    if (username && userId) {
+      setUser({ username });
+
+      // Fetch test results
+      fetch(`http://localhost:8080/mypage/${userId}/results`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch test results');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data.test_results); // ここでテスト結果を確認
+          setTestResults(data.test_results);
+        })
+        .catch((err) => setError(err.message));
     }
   }, []);
 
   if (!user) {
-    return <p>Loading...</p>; // ロード中の表示
+    return <p>Loading...</p>;
   }
 
   return (
@@ -28,10 +42,29 @@ const MyPage = () => {
             <Card.Body>
               <Card.Title>マイページ</Card.Title>
               <Card.Text>ユーザー名: {user.username}</Card.Text>
-              {/* 他のユーザー情報を表示する */}
-              <Button variant="primary" onClick={() => alert('プロフィールを編集')}>プロフィール編集</Button>
+              {error && <Alert variant="danger">{error}</Alert>}
+
+              <h5>テスト結果</h5>
+              {testResults.length > 0 ? (
+                <ListGroup>
+                  {testResults.map((result) => (
+                    <ListGroup.Item key={result.ID}>
+                      テスト種別: {result.test_type} | スコア: {result.score}/10
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              ) : (
+                <p>テスト結果がありません。</p>
+              )}
             </Card.Body>
           </Card>
+        </Col>
+      </Row>
+      <Row className="mt-3"> {/* ここでマージンを追加 */}
+        <Col className="text-center"> {/* 中央揃え */}
+          <Button variant="primary" onClick={() => alert('プロフィールを編集')}>
+            プロフィール編集
+          </Button>
         </Col>
       </Row>
     </Container>

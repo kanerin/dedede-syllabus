@@ -27,33 +27,59 @@ const RegexTest = () => {
     setAnswers({ ...answers, [id]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newResults = {};
-
+    let score = 0;
+  
+    // 採点処理
     questions.forEach((question) => {
       try {
         if (!answers[question.id]) {
-          newResults[question.id] = { result: 'No input', userAnswer: '' }; // 修正: 回答内容も保存
+          newResults[question.id] = { result: 'No input', userAnswer: '' }; // 回答がない場合
           return;
         }
-
+  
         const re = new RegExp(answers[question.id]);
         const matches = question.string
           .split(' ')
           .filter(word => re.test(word));
-
+  
         const isCorrect = JSON.stringify(matches) === JSON.stringify(question.expectedMatches);
         newResults[question.id] = {
           result: isCorrect ? 'OK' : 'NG',
-          userAnswer: answers[question.id], // 修正: 回答内容を保存
+          userAnswer: answers[question.id], // 回答内容を保存
         };
+  
+        if (isCorrect) score += 1; // 正解の場合スコアを加算
       } catch (error) {
         newResults[question.id] = { result: 'Invalid regex', userAnswer: answers[question.id] };
       }
     });
-
-    navigate('/results', { state: { results: newResults, questions } }); // 修正: 質問も結果ページに送る
+  
+    // テスト結果をサーバーに送信
+    try {
+      const response = await fetch('http://localhost:8080/save-result', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: parseInt(localStorage.getItem('user_id')), // 数値に変換
+          test_type: 'regex', // テスト種別
+          score: score, // 計算されたスコア
+          results: newResults, // 各問題の結果も送信
+        }),
+      });
+  
+      const result = await response.json();
+      console.log(result.message); // 保存成功メッセージを表示
+    } catch (error) {
+      console.error('Failed to save test result:', error);
+    }
+  
+    // 結果ページに遷移
+    navigate('/results', { state: { results: newResults, questions } });
   };
 
   // ハイライトされた単語を表示する関数
