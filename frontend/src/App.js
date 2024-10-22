@@ -45,6 +45,7 @@ function App() {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
+        localStorage.setItem('user_id', data.user_id);
         setMessage(`Welcome, ${data.username}!`);
         setIsLoggedIn(true);
         setUsername(data.username);
