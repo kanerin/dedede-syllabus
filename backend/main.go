@@ -4,7 +4,7 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/gin-contrib/cors"
     "gorm.io/gorm"
-    "gorm.io/driver/postgres"
+    "gorm.io/driver/mysql"  // MySQLドライバをインポート
     "dedede-syllabus/controllers"  // controllers のパッケージをインポート
     "dedede-syllabus/models"
     "log"
@@ -15,12 +15,28 @@ import (
 var db *gorm.DB
 
 func main() {
-    // データベース接続設定
-    dsn := "host=db user=user password=password dbname=dedede_db port=5432 sslmode=disable"
+    // MySQL接続設定
+    dsn := "user:password@tcp(db:3306)/dedede_db?charset=utf8&parseTime=True&loc=Local"
     var err error
-    db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+    // リトライ処理の設定
+    maxRetries := 6        // 最大リトライ回数
+    waitTimes := []int{1, 2, 4, 8, 16, 32} // 待機時間（秒）
+
+    for i := 0; i < maxRetries; i++ {
+        db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})  // MySQLに接続
+        if err == nil {
+            break // 成功した場合、ループを抜ける
+        }
+
+        if i < maxRetries-1 {
+            log.Printf("Failed to connect to database. Retrying in %d seconds...\n", waitTimes[i])
+            time.Sleep(time.Duration(waitTimes[i]) * time.Second) // 指定された時間待機
+        }
+    }
+
     if err != nil {
-        log.Fatal("Failed to connect to database:", err)
+        log.Fatal("Failed to connect to database after multiple attempts:", err)
     }
 
     // データベースのマイグレーション

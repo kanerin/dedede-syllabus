@@ -8,6 +8,7 @@ services:
       - ./backend:/app
     depends_on:
       - frontend
+      - db
 
   frontend:
     build: ./frontend
@@ -20,15 +21,17 @@ services:
     tty: true
 
   db:
-    image: postgres:13-alpine
+    image: mysql:5.7  # MySQLのイメージを指定
+    platform: linux/amd64
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dedede_db
+      MYSQL_ROOT_PASSWORD: rootpassword  # rootパスワード
+      MYSQL_DATABASE: dedede_db  # 初期データベース名
+      MYSQL_USER: user  # ユーザー名
+      MYSQL_PASSWORD: password  # ユーザーパスワード
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/mysql  # MySQLデータの永続化
     ports:
-      - "5432:5432"
+      - "3306:3306"  # MySQLのポートをマッピング
 
 volumes:
   db_data:
