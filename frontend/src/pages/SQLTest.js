@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap';
 
 const SQLTest = () => {
-  const [questions, setQuestions] = useState([]);  // 初期値を空配列に変更
+  const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState({});
   const [error, setError] = useState(null);
@@ -64,35 +65,43 @@ const SQLTest = () => {
   };
 
   return (
-    <div>
-      <h1>SQL Test</h1>
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      <form onSubmit={handleSubmit}>
+    <Container className="mt-5">
+      <h1 className="text-center">SQL Test</h1>
+      {error && <Alert variant="danger">エラー: {error}</Alert>}
+      <Form onSubmit={handleSubmit}>
         {questions.length > 0 ? (
-          questions.map((category) => (
-            category && category.questions ? (  // category と category.questions が存在するかをチェック
-              <div key={category.name}>
-                <h2>{category.name}</h2>
-                {category.questions.map((question) => (
-                  <div key={question.id}>
-                    <h3>{question.question}</h3>
-                    <input
-                      type="text"
-                      placeholder="SQLクエリを入力してください"
-                      value={answers[question.id] || ''}
-                      onChange={(e) => handleChange(question.id, e.target.value)}
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : null  // category または questions が存在しない場合は何も表示しない
+          questions.map((category, index) => (
+            category && category.questions ? (
+              <Card key={category.name} className="mb-4">
+                <Card.Body>
+                  <Card.Title>{category.name}</Card.Title>
+                  {category.questions.map((question) => (
+                    <div key={question.id}>
+                      <Card.Text>{question.question}</Card.Text>
+                      <Form.Group controlId={`formSQL${question.id}`}>
+                        <Form.Control
+                          type="text"
+                          placeholder="SQLクエリを入力してください"
+                          value={answers[question.id] || ''}
+                          onChange={(e) => handleChange(question.id, e.target.value)}
+                        />
+                      </Form.Group>
+                    </div>
+                  ))}
+                </Card.Body>
+              </Card>
+            ) : null
           ))
         ) : (
           <p>Loading questions...</p>
         )}
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+        <Row className="mt-4">
+          <Col className="text-center">
+            <Button variant="primary" type="submit">結果を提出</Button>
+          </Col>
+        </Row>
+      </Form>
+    </Container>
   );
 };
 
