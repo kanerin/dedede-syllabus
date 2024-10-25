@@ -1,16 +1,22 @@
-package routes
+package router
 
 import (
-    "dedede-syllabus/controllers"
     "github.com/gin-gonic/gin"
+    "dedede-syllabus/controllers"
+    "gorm.io/gorm"
 )
 
-func SetupRouter() *gin.Engine {
+// ルーティング設定
+func SetupRouter(db *gorm.DB) *gin.Engine {
     r := gin.Default()
 
-    // エンドポイントを設定
     r.POST("/register", controllers.Register)
     r.POST("/login", controllers.Login)
+
+    // 管理者エンドポイント
+    r.GET("/api/admin/results/:user_id", func(c *gin.Context) {
+        controllers.GetAllUserResults(c, db) // DBを引数に渡す
+    })
 
     return r
 }

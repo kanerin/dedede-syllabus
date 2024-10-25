@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap'; // React Bootstrapコンポーネントのインポート
 
-function NavBar({ isLoggedIn, handleLogout }) {
+function NavBar({ isLoggedIn, handleLogout, isAdmin }) { // isAdminをプロパティとして受け取る
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
@@ -15,6 +15,7 @@ function NavBar({ isLoggedIn, handleLogout }) {
             <Nav.Link as={Link} to="/sql">SQL Test</Nav.Link>
             <Nav.Link as={Link} to="/ajax">AJAX Test</Nav.Link>
             {isLoggedIn && <Nav.Link as={Link} to="/mypage">My Page</Nav.Link>}
+            {isLoggedIn && <Nav.Link as={Link} to="/admin">Admin Page</Nav.Link>} {/* 管理者ページへのリンク */}
           </Nav>
           <Nav>
             {isLoggedIn ? (

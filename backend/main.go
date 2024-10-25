@@ -83,6 +83,11 @@ func main() {
     r.GET("/mypage/:user_id/results", func(c *gin.Context) {
         controllers.GetTestResults(c, db)
     })
+
+    // 管理者エンドポイント
+    r.GET("/api/admin/results/:user_id", func(c *gin.Context) {
+        controllers.GetAllUserResults(c, db) // DBを引数に渡す
+    })
     
     // サーバー起動
     r.Run(":8080")

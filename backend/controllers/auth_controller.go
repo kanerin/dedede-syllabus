@@ -99,7 +99,13 @@ func Login(c *gin.Context, db *gorm.DB) {
         return
     }
 
-    c.JSON(http.StatusOK, gin.H{"message": "Login successful", "user_id": user.ID, "token": token, "username": user.Username})
+    c.JSON(http.StatusOK, gin.H{
+        "message":   "Login successful",
+        "token":     token,
+        "username":  user.Username,
+        "user_id":   user.ID,
+        "admin":     user.Admin, // 管理者フラグを追加
+    })
 }
 
 // JWTの認証を行うミドルウェア
