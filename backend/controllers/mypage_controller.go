@@ -5,22 +5,26 @@ import (
     "github.com/gin-gonic/gin"
     "dedede-syllabus/models"
     "gorm.io/gorm"  // GORMをインポート
-	"fmt"
 )
 
 // マイページ用のテスト結果を取得する
 func GetTestResults(c *gin.Context, db *gorm.DB) {
-    var testResults []models.TestResult
     userID := c.Param("user_id")
 
-    // テスト結果をデータベースから取得
-    if err := db.Where("user_id = ?", userID).Find(&testResults).Error; err != nil {
+    // TestResultとTestをJOINしてデータを取得
+    var results []struct {
+        models.TestResult
+        TestName string `json:"test_name"`
+    }
+
+    if err := db.Table("test_results").
+        Select("test_results.*, tests.name AS test_name").
+        Joins("JOIN tests ON test_results.test_id = tests.id").
+        Where("test_results.user_id = ?", userID).
+        Scan(&results).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve test results"})
         return
     }
 
-	// デバッグ用: 取得した結果を表示
-    fmt.Printf("Fetched test results: %+v\n", testResults)
-
-    c.JSON(http.StatusOK, gin.H{"test_results": testResults})
+    c.JSON(http.StatusOK, gin.H{"test_results": results})
 }

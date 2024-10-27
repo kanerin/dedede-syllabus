@@ -5,14 +5,13 @@ import (
     "github.com/gin-gonic/gin"
     "gorm.io/gorm"
     "dedede-syllabus/models"
-	"log"
+    "log"
 )
 
 // GetAllUserResults 関数を更新
 func GetAllUserResults(c *gin.Context, db *gorm.DB) {
     userID := c.Param("user_id")
-	log.Printf("Received request for user_id: %s", userID)
-
+    log.Printf("Received request for user_id: %s", userID)
 
     // user_idからユーザー情報を取得
     var user models.User
@@ -27,9 +26,18 @@ func GetAllUserResults(c *gin.Context, db *gorm.DB) {
         return
     }
 
-    // 管理者の全ユーザー結果を取得
-    var results []models.TestResult
-    if err := db.Find(&results).Error; err != nil {
+    // 管理者の全ユーザー結果を取得（ユーザー名とテスト名も取得する）
+    var results []struct {
+        models.TestResult
+        Username  string `json:"username"`
+        TestName  string `json:"test_name"`
+    }
+
+    if err := db.Table("test_results").
+        Select("test_results.*, users.username, tests.name AS test_name").
+        Joins("JOIN users ON test_results.user_id = users.id").
+        Joins("JOIN tests ON test_results.test_id = tests.id"). // testsテーブルとJOIN
+        Scan(&results).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve results"})
         return
     }

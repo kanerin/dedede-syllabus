@@ -49,7 +49,7 @@ const MyPage = () => {
                 <ListGroup>
                   {testResults.map((result) => (
                     <ListGroup.Item key={result.ID}>
-                      テスト種別: {result.test_type} | スコア: {result.score}/10
+                      テスト名: {result.test_name} | スコア: {result.score}/10
                     </ListGroup.Item>
                   ))}
                 </ListGroup>

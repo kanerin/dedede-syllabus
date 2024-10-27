@@ -41,7 +41,8 @@ const Admin = () => {
         <thead>
           <tr>
             <th>ユーザーID</th>
-            <th>テスト種別</th>
+            <th>ユーザー名</th>
+            <th>テスト名</th> {/* テスト名のカラムを追加 */}
             <th>スコア</th>
             <th>ユーザー回答</th>
             <th>結果</th>
@@ -51,7 +52,8 @@ const Admin = () => {
           {results.map(result => (
             <tr key={result.ID}>
               <td>{result.user_id}</td>
-              <td>{result.test_type}</td>
+              <td>{result.username}</td> {/* ユーザー名を表示 */}
+              <td>{result.test_name}</td> {/* テスト名を表示 */}
               <td>{result.score}</td>
               <td>{result.user_answer}</td>
               <td>{result.result}</td>
