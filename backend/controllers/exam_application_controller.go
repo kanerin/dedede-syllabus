@@ -59,3 +59,33 @@ func GetExamApplications(c *gin.Context, db *gorm.DB) {
 
 	c.JSON(http.StatusOK, gin.H{"applications": applications})
 }
+
+// GetAllExamApplications - すべての受験申請を取得する
+func GetAllExamApplications(c *gin.Context, db *gorm.DB) {
+    var applications []models.ExamApplication
+    if err := db.Preload("Test").Find(&applications).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve applications"})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"applications": applications})
+}
+
+// UpdateExamApplication - 受験申請の承認状況を更新する
+func UpdateExamApplication(c *gin.Context, db *gorm.DB) {
+    var application models.ExamApplication
+    id := c.Param("id")
+
+    // 受信したデータをバインド
+    if err := c.ShouldBindJSON(&application); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    // 承認状況を更新
+    if err := db.Model(&application).Where("id = ?", id).Update("approved", application.Approved).Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update application"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "受験申請の承認状況が更新されました"})
+}

@@ -108,6 +108,16 @@ func main() {
         controllers.GetExamApplications(c, db) // DBを引数に渡す
     })
 
+    // 受験申請の一覧を取得するエンドポイント
+    r.GET("/api/exam-applications", func(c *gin.Context) {
+        controllers.GetAllExamApplications(c, db) // 全ての受験申請を取得
+    })
+
+    // 受験申請の承認状況を更新するエンドポイント
+    r.PUT("/api/exam-applications/:id", func(c *gin.Context) {
+        controllers.UpdateExamApplication(c, db) // 受験申請の承認状況を更新
+    })
+
     
     // サーバー起動
     r.Run(":8080")
