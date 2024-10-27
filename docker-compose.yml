@@ -25,17 +25,16 @@ services:
     tty: true
 
   db:
-    image: mysql:8.0  # MySQLのイメージを指定
+    image: postgres:14  # PostgreSQLのイメージを指定
     platform: linux/amd64
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword  # rootパスワード
-      MYSQL_DATABASE: dedede_db  # 初期データベース名
-      MYSQL_USER: user  # ユーザー名
-      MYSQL_PASSWORD: password  # ユーザーパスワード
+      POSTGRES_USER: user  # ユーザー名
+      POSTGRES_PASSWORD: password  # ユーザーパスワード
+      POSTGRES_DB: dedede_db  # 初期データベース名
     volumes:
-      - db_data:/var/lib/mysql  # MySQLデータの永続化
+      - db_data:/var/lib/postgresql/data  # PostgreSQLデータの永続化
     ports:
-      - "3306:3306"  # MySQLのポートをマッピング
+      - "5432:5432"  # PostgreSQLのポートをマッピング
 
 volumes:
   db_data:

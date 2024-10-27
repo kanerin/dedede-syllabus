@@ -4,7 +4,7 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/gin-contrib/cors"
     "gorm.io/gorm"
-    "gorm.io/driver/mysql"  // MySQLドライバをインポート
+    "gorm.io/driver/postgres"  // MySQLドライバをインポート
     "dedede-syllabus/controllers"  // controllers のパッケージをインポート
     "dedede-syllabus/models"
     "log"
@@ -16,7 +16,7 @@ var db *gorm.DB
 
 func main() {
     // MySQL接続設定
-    dsn := "user:password@tcp(db:3306)/dedede_db?charset=utf8&parseTime=True&loc=Local"
+    dsn := "user=user password=password dbname=dedede_db host=db port=5432 sslmode=disable"
     var err error
 
     // リトライ処理の設定
@@ -24,7 +24,7 @@ func main() {
     waitTimes := []int{1, 2, 4, 8, 16, 32} // 待機時間（秒）
 
     for i := 0; i < maxRetries; i++ {
-        db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})  // MySQLに接続
+        db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
         if err == nil {
             break // 成功した場合、ループを抜ける
         }
