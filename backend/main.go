@@ -40,8 +40,7 @@ func main() {
     }
 
     // データベースのマイグレーション
-    db.AutoMigrate(&models.ExamApplication{}, &models.User{}, &models.TestResult{}, &models.Test{})
-
+    db.AutoMigrate(&models.User{}, &models.TestResult{}, &models.Item{}, &models.Order{})
     Seed(db)
 
     // Ginのルーター設定

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Alert, Card, Table } from 'react-bootstrap';
 
 const SQLTest = () => {
   const [questions, setQuestions] = useState([]);
@@ -8,6 +8,27 @@ const SQLTest = () => {
   const [results, setResults] = useState({});
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Itemsテーブルのデータ
+  const itemsData = [
+    { id: 1, name: 'Apple', price: 150 },
+    { id: 2, name: 'Orange', price: 100 },
+    { id: 3, name: 'Water_Melon', price: 300 },
+    { id: 4, name: 'Lemon', price: 100 },
+    { id: 5, name: 'Grape', price: 250 },
+  ];
+
+  // Ordersテーブルのデータ
+  const ordersData = [
+    { id: 1, item_id: 2, amount: 10 },
+    { id: 2, item_id: 1, amount: 5 },
+    { id: 3, item_id: 5, amount: 40 },
+    { id: 4, item_id: 3, amount: 20 },
+    { id: 5, item_id: 3, amount: 10 },
+    { id: 6, item_id: 2, amount: 2 },
+    { id: 7, item_id: 5, amount: 4 },
+    { id: 8, item_id: 2, amount: 8 },
+  ];
 
   useEffect(() => {
     // SQLの問題をバックエンドから取得
@@ -19,7 +40,6 @@ const SQLTest = () => {
         return res.json();
       })
       .then(data => {
-        // selected_categories内のNameとQuestionsのキー名を小文字に変換
         const formattedData = data.selected_categories.map(category => ({
           name: category.Name,
           questions: category.Questions,
@@ -32,21 +52,25 @@ const SQLTest = () => {
       });
   }, []);
 
+  // クエリ入力値の変更を更新する関数
   const handleChange = (id, value) => {
     setAnswers({ ...answers, [id]: value });
   };
 
+  // クエリ送信時の処理
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formattedPayload = { answers };
+    console.log("Submitting Payload:", JSON.stringify(formattedPayload));
+
     try {
-      // SQLクエリをバックエンドに送信
       const response = await fetch('http://localhost:8080/api/submit-sql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ answers }),
+        body: JSON.stringify(formattedPayload),
       });
 
       if (!response.ok) {
@@ -54,9 +78,6 @@ const SQLTest = () => {
       }
 
       const data = await response.json();
-      setResults(data.results);
-
-      // 結果ページに遷移（または現在のページで結果を表示）
       navigate('/results', { state: { results: data.results } });
     } catch (err) {
       console.error('Submission error:', err);
@@ -68,6 +89,50 @@ const SQLTest = () => {
     <Container className="mt-5">
       <h1 className="text-center">SQL Test</h1>
       {error && <Alert variant="danger">エラー: {error}</Alert>}
+
+      {/* items テーブルの表示 */}
+      <h3>items Table</h3>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {itemsData.map(item => (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{item.name}</td>
+              <td>{item.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      {/* orders テーブルの表示 */}
+      <h3>orders Table</h3>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Item ID</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ordersData.map(order => (
+            <tr key={order.id}>
+              <td>{order.id}</td>
+              <td>{order.item_id}</td>
+              <td>{order.amount}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      {/* SQLテストの問題入力 */}
       <Form onSubmit={handleSubmit}>
         {questions.length > 0 ? (
           questions.map((category, index) => (
