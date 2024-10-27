@@ -11,17 +11,8 @@ import (
 func GetTestResults(c *gin.Context, db *gorm.DB) {
     userID := c.Param("user_id")
 
-    // TestResultとTestをJOINしてデータを取得
-    var results []struct {
-        models.TestResult
-        TestName string `json:"test_name"`
-    }
-
-    if err := db.Table("test_results").
-        Select("test_results.*, tests.name AS test_name").
-        Joins("JOIN tests ON test_results.test_id = tests.id").
-        Where("test_results.user_id = ?", userID).
-        Scan(&results).Error; err != nil {
+    var results []models.TestResult
+    if err := db.Preload("Test").Where("user_id = ?", userID).Find(&results).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve test results"})
         return
     }

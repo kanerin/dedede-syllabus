@@ -40,7 +40,7 @@ func main() {
     }
 
     // データベースのマイグレーション
-    db.AutoMigrate(&models.User{}, &models.TestResult{}, &models.Test{})
+    db.AutoMigrate(&models.ExamApplication{}, &models.User{}, &models.TestResult{}, &models.Test{})
 
     Seed(db)
 
@@ -90,6 +90,24 @@ func main() {
     r.GET("/api/admin/results/:user_id", func(c *gin.Context) {
         controllers.GetAllUserResults(c, db) // DBを引数に渡す
     })
+
+    r.GET("/api/tests", func(c *gin.Context) {
+        controllers.GetAllTests(c, db) // テスト一覧を取得
+    })
+
+    r.GET("/api/tests/:id", func(c *gin.Context) {
+        controllers.GetTestByID(c, db)
+    })
+
+    r.POST("/api/apply-test", func(c *gin.Context) {
+        controllers.ApplyTest(c, db) // 受験申請を処理
+    })
+
+    // 受験申請を取得するエンドポイント
+    r.GET("/mypage/:user_id/applications", func(c *gin.Context) {
+        controllers.GetExamApplications(c, db) // DBを引数に渡す
+    })
+
     
     // サーバー起動
     r.Run(":8080")

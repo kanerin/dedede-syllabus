@@ -11,6 +11,8 @@ import Register from './pages/Register';
 import ResultPage from './pages/ResultPage'; 
 import MyPage from './pages/MyPage';
 import Admin from './pages/Admin'; 
+import ApplyTest from './pages/ApplyTest'; // 受験申請ページのインポート
+
 
 import NavBar from './components/NavBar'; 
 
@@ -47,7 +49,7 @@ function App() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
         localStorage.setItem('user_id', data.user_id);
-        
+
         setMessage(`Welcome, ${data.username}!`);
         setIsLoggedIn(true);
         setUsername(data.username);
@@ -85,6 +87,7 @@ function App() {
           <Route path="/results" element={<ResultPage />} />
           {isLoggedIn && <Route path="/mypage" element={<MyPage />} />}
           {isLoggedIn && <Route path="/admin" element={<Admin />} />} {/* 管理者ページのルート */}
+          <Route path="/apply/:testId" element={<ApplyTest />} /> {/* 受験申請ページのルート */}
         </Routes>
       </Container>
     </Router>
