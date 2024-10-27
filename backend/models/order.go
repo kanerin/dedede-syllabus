@@ -4,7 +4,7 @@ import (
     "gorm.io/gorm"
 )
 
-type TestOrder struct {
+type Order struct {
     gorm.Model
     ItemID int `json:"item_id"`
     Amount int `json:"amount"`

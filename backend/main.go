@@ -40,7 +40,7 @@ func main() {
     }
 
     // データベースのマイグレーション
-    db.AutoMigrate(&models.User{}, &models.TestResult{})
+    db.AutoMigrate(&models.User{}, &models.TestResult{}, &models.Item{}, &models.Order{})
 
     // Ginのルーター設定
     r := gin.Default()

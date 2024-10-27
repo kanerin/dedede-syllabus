@@ -1,0 +1,23 @@
+{
+    "11": "[{\"id\":3,\"name\":\"Water_Melon\",\"price\":300},{\"id\":5,\"name\":\"Grape\",\"price\":250}]",
+    "12": "[{\"id\":2,\"item_id\":1,\"amount\":5},{\"id\":6,\"item_id\":2,\"amount\":2},{\"id\":7,\"item_id\":5,\"amount\":4},{\"id\":8,\"item_id\":2,\"amount\":8}]",
+    "13": "[{\"name\":\"Orange\"},{\"name\":\"Lemon\"}]",
+    "14": "[{\"id\":3,\"name\":\"Water_Melon\",\"price\":300}]",
+    "21": "[{\"id\":1,\"item_id\":2,\"name\":\"Orange\",\"price\":100,\"amount\":10},{\"id\":2,\"item_id\":1,\"name\":\"Apple\",\"price\":150,\"amount\":5},{\"id\":3,\"item_id\":5,\"name\":\"Grape\",\"price\":250,\"amount\":40},{\"id\":4,\"item_id\":3,\"name\":\"Water_Melon\",\"price\":300,\"amount\":20},{\"id\":5,\"item_id\":3,\"name\":\"Water_Melon\",\"price\":300,\"amount\":10},{\"id\":6,\"item_id\":2,\"name\":\"Orange\",\"price\":100,\"amount\":2},{\"id\":7,\"item_id\":5,\"name\":\"Grape\",\"price\":250,\"amount\":4},{\"id\":8,\"item_id\":2,\"name\":\"Orange\",\"price\":100,\"amount\":8}]",
+    "22": "[{\"amount\":5,\"item_id\":1,\"name\":\"Apple\",\"price\":150},{\"amount\":4,\"item_id\":5,\"name\":\"Grape\",\"price\":250},{\"amount\":40,\"item_id\":5,\"name\":\"Grape\",\"price\":250},{\"amount\":null,\"item_id\":null,\"name\":\"Lemon\",\"price\":100},{\"amount\":8,\"item_id\":2,\"name\":\"Orange\",\"price\":100},{\"amount\":2,\"item_id\":2,\"name\":\"Orange\",\"price\":100},{\"amount\":10,\"item_id\":2,\"name\":\"Orange\",\"price\":100},{\"amount\":10,\"item_id\":3,\"name\":\"Water_Melon\",\"price\":300},{\"amount\":20,\"item_id\":3,\"name\":\"Water_Melon\",\"price\":300}]",
+    "23": "[{\"amount\":40,\"item_id\":5,\"name\":\"Grape\",\"price\":250},{\"amount\":20,\"item_id\":3,\"name\":\"Water_Melon\",\"price\":300}]",
+    "31": "[{\"item_id\":2},{\"item_id\":1},{\"item_id\":5},{\"item_id\":3}]",
+    "32": "[{\"price\":150,\"count\":1},{\"price\":100,\"count\":2},{\"price\":300,\"count\":1},{\"price\":250,\"count\":1}]",
+    "33": "[{\"item_id\":2,\"sum\":20},{\"item_id\":5,\"sum\":44},{\"item_id\":3,\"sum\":30}]",
+    "41": "[{\"item_id\":1,\"max\":5}]",
+    "42": "[{\"price\":100,\"count\":2}]",
+    "43": "[{\"item_id\":5,\"avg\":22.0},{\"item_id\":3,\"avg\":15.0}]",
+    "51": "RolledBack",
+    "52": "RolledBack",
+    "53": "RolledBack",
+    "54": "RolledBack",
+    "55": "RolledBack",
+    "61": "[{\"id\":3,\"item_id\":3,\"amount\":20},{\"id\":5,\"item_id\":3,\"amount\":10},{\"id\":3,\"item_id\":5,\"amount\":40},{\"id\":7,\"item_id\":5,\"amount\":4}]",
+    "62": "[{\"id\":1,\"name\":\"Apple\",\"price\":150}]",
+    "63": "[{\"name\":\"Orange\"},{\"name\":\"Water_Melon\"},{\"name\":\"Grape\"}]"
+}
