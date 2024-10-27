@@ -56,7 +56,7 @@ func main() {
     // CORSミドルウェアの設定
     var allowedOrigins []string
     if os.Getenv("ENV") == "production" {
-        allowedOrigins = []string{"https://your-production-domain.com"} // 本番用のドメインを指定
+        allowedOrigins = []string{"https://dedede-syllabus.onrender.com"} // 本番用のドメインを指定
     } else {
         allowedOrigins = []string{"http://localhost:3000"} // 開発環境用
     }
