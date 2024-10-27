@@ -17,12 +17,6 @@ import (
 var db *gorm.DB
 
 func main() {
-    // .envファイルを読み込む
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatal("Error loading .env file")
-    }
-
     // PostgreSQL接続設定
     dsn := "user=" + os.Getenv("USERNAME") + 
             " password=" + os.Getenv("PASSWORD") + 
