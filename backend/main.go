@@ -1,6 +1,7 @@
 package main
 
 import (
+    "github.com/joho/godotenv"
     "github.com/gin-gonic/gin"
     "github.com/gin-contrib/cors"
     "gorm.io/gorm"
@@ -8,6 +9,7 @@ import (
     "dedede-syllabus/controllers"  // controllers のパッケージをインポート
     "dedede-syllabus/models"
     "log"
+    "os"
     "time"
 )
 
@@ -15,9 +17,19 @@ import (
 var db *gorm.DB
 
 func main() {
-    // MySQL接続設定
-    dsn := "user=user password=password dbname=dedede_db host=db port=5432 sslmode=disable"
-    var err error
+    // .envファイルを読み込む
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatal("Error loading .env file")
+    }
+
+    // PostgreSQL接続設定
+    dsn := "user=" + os.Getenv("USERNAME") + 
+            " password=" + os.Getenv("PASSWORD") + 
+            " dbname=" + os.Getenv("DATABASE") + 
+            " host=" + os.Getenv("DB_HOST") + 
+            " port=" + os.Getenv("PORT") + 
+            " sslmode=disable"
 
     // リトライ処理の設定
     maxRetries := 6        // 最大リトライ回数
