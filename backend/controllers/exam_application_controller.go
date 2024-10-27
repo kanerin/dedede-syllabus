@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+    "time"
 )
 
 // ApplyTest - 受験申請を処理する
@@ -28,6 +29,10 @@ func ApplyTest(c *gin.Context, db *gorm.DB) {
         c.JSON(http.StatusBadRequest, gin.H{"error": "受験申請に必要な情報が不足しています。"})
         return
     }
+    
+    // 日本時間をUTCに変換
+	japanTime := application.StartTime.In(time.FixedZone("Asia/Tokyo", 9*60*60))
+	application.StartTime = japanTime.UTC() // UTCに変換
 
 	// データベースに保存
 	if err := db.Create(&application).Error; err != nil {
@@ -44,7 +49,10 @@ func GetExamApplications(c *gin.Context, db *gorm.DB) {
 	userID := c.Param("user_id")
 
 	var applications []models.ExamApplication
-	if err := db.Preload("Test").Where("user_id = ?", userID).Find(&applications).Error; err != nil {
+	currentTime := time.Now() // 現在の日時を取得
+
+	// 現在より後の開始日時を持つ申請のみを取得
+	if err := db.Preload("Test").Where("user_id = ? AND start_time > ?", userID, currentTime).Find(&applications).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve applications"})
 		return
 	}

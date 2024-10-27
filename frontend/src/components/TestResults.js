@@ -36,7 +36,7 @@ const TestResults = ({ userId }) => {
         <ListGroup>
           {testResults.map((result) => (
             <ListGroup.Item key={result.ID}>
-              テスト名: {result.Test.name} | スコア: {result.score}/10
+              テスト名: {result.Test.name} | スコア: {result.score}/10 | 受験日時: {isNaN(Date.parse(result.CreatedAt)) ? "無効な日付" : new Date(result.CreatedAt).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}
             </ListGroup.Item>
           ))}
         </ListGroup>

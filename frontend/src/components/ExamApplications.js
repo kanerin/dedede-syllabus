@@ -43,7 +43,7 @@ const ExamApplications = ({ userId }) => {
         <ListGroup>
           {applications.map((app) => (
             <ListGroup.Item key={app.ID}>
-              テスト名: {app.test.name} | 受験開始日時: {isNaN(Date.parse(app.startTime)) ? "無効な日付" : new Date(app.startTime).toLocaleString()} | 承認状況: {app.approved ? "承認済み" : "未承認"}
+              テスト名: {app.test.name} | 受験開始日時: {isNaN(Date.parse(app.startTime)) ? "無効な日付" : new Date(app.startTime).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })} | 承認状況: {app.approved ? "承認済み" : "未承認"}
             </ListGroup.Item>
           ))}
         </ListGroup>

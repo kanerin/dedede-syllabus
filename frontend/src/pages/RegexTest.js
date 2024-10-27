@@ -107,6 +107,27 @@ const RegexTest = () => {
     handleCloseModal(); // モーダルを非表示
   };
 
+  // ハイライトされた単語を表示する関数
+  const highlightMatches = (text, regexString) => {
+    let regex;
+    try {
+      if (!regexString) {
+        return text.split(' ').map((word, index) => <span key={index}>{word} </span>);
+      }
+      regex = new RegExp(regexString);
+    } catch (error) {
+      return text.split(' ').map((word, index) => <span key={index}>{word} </span>);
+    }
+
+    const words = text.split(' ');
+    return words.map((word, index) => {
+      if (regex.test(word)) {
+        return <span key={index} style={{ backgroundColor: 'yellow' }}>{word}</span>;
+      }
+      return <span key={index}>{word}</span>;
+    }).reduce((prev, curr) => [prev, ' ', curr]);
+  };
+
   return (
     <Container className="mt-5">
       <h1 className="text-center">正規表現テスト</h1>
@@ -118,6 +139,7 @@ const RegexTest = () => {
               <Card.Body>
                 <Card.Title>問題 {index + 1}</Card.Title>
                 <Card.Text>{question.question}</Card.Text>
+                <p>{highlightMatches(question.string, answers[question.id] || '')}</p> {/* ハイライト表示 */}
                 <Form.Group controlId={`formRegex${question.id}`}>
                   <Form.Control
                     type="text"
