@@ -17,6 +17,7 @@ import (
 var db *gorm.DB
 
 func main() {
+    err := godotenv.Load()
     // PostgreSQL接続設定
     dsn := "user=" + os.Getenv("USERNAME") + 
             " password=" + os.Getenv("PASSWORD") + 
