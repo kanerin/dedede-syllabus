@@ -53,10 +53,16 @@ func main() {
 
     // Ginのルーター設定
     r := gin.Default()
-
     // CORSミドルウェアの設定
+    var allowedOrigins []string
+    if os.Getenv("ENV") == "production" {
+        allowedOrigins = []string{"https://your-production-domain.com"} // 本番用のドメインを指定
+    } else {
+        allowedOrigins = []string{"http://localhost:3000"} // 開発環境用
+    }
+
     r.Use(cors.New(cors.Config{
-        AllowOrigins:     []string{"http://localhost:3000"},
+        AllowOrigins:     allowedOrigins,
         AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
         AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
         ExposeHeaders:    []string{"Content-Length"},
