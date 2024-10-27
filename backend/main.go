@@ -4,7 +4,7 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/gin-contrib/cors"
     "gorm.io/gorm"
-    "gorm.io/driver/mysql"  // MySQLドライバをインポート
+    "gorm.io/driver/postgres"  // MySQLドライバをインポート
     "dedede-syllabus/controllers"  // controllers のパッケージをインポート
     "dedede-syllabus/models"
     "log"
@@ -16,7 +16,7 @@ var db *gorm.DB
 
 func main() {
     // MySQL接続設定
-    dsn := "user:password@tcp(db:3306)/dedede_db?charset=utf8&parseTime=True&loc=Local"
+    dsn := "user=user password=password dbname=dedede_db host=db port=5432 sslmode=disable"
     var err error
 
     // リトライ処理の設定
@@ -24,7 +24,7 @@ func main() {
     waitTimes := []int{1, 2, 4, 8, 16, 32} // 待機時間（秒）
 
     for i := 0; i < maxRetries; i++ {
-        db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})  // MySQLに接続
+        db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
         if err == nil {
             break // 成功した場合、ループを抜ける
         }
@@ -40,7 +40,9 @@ func main() {
     }
 
     // データベースのマイグレーション
-    db.AutoMigrate(&models.User{}, &models.TestResult{})
+    db.AutoMigrate(&models.ExamApplication{}, &models.User{}, &models.TestResult{}, &models.Test{})
+
+    Seed(db)
 
     // Ginのルーター設定
     r := gin.Default()
@@ -83,6 +85,39 @@ func main() {
     r.GET("/mypage/:user_id/results", func(c *gin.Context) {
         controllers.GetTestResults(c, db)
     })
+
+    // 管理者エンドポイント
+    r.GET("/api/admin/results/:user_id", func(c *gin.Context) {
+        controllers.GetAllUserResults(c, db) // DBを引数に渡す
+    })
+
+    r.GET("/api/tests", func(c *gin.Context) {
+        controllers.GetAllTests(c, db) // テスト一覧を取得
+    })
+
+    r.GET("/api/tests/:id", func(c *gin.Context) {
+        controllers.GetTestByID(c, db)
+    })
+
+    r.POST("/api/apply-test", func(c *gin.Context) {
+        controllers.ApplyTest(c, db) // 受験申請を処理
+    })
+
+    // 受験申請を取得するエンドポイント
+    r.GET("/mypage/:user_id/applications", func(c *gin.Context) {
+        controllers.GetExamApplications(c, db) // DBを引数に渡す
+    })
+
+    // 受験申請の一覧を取得するエンドポイント
+    r.GET("/api/exam-applications", func(c *gin.Context) {
+        controllers.GetAllExamApplications(c, db) // 全ての受験申請を取得
+    })
+
+    // 受験申請の承認状況を更新するエンドポイント
+    r.PUT("/api/exam-applications/:id", func(c *gin.Context) {
+        controllers.UpdateExamApplication(c, db) // 受験申請の承認状況を更新
+    })
+
     
     // サーバー起動
     r.Run(":8080")

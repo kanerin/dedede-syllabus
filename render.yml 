@@ -1,0 +1,46 @@
+version: "1"
+
+services:
+  - type: web
+    name: dedede-syllabus-backend
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: ./backend/Dockerfile
+    repo: https://github.com/kanerin/dedede-syllabus  # あなたのGitHubリポジトリ
+    plan: free
+    region: singapore
+    branch: release-prd
+    autoDeploy: true
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: dedede-syllabus-db  # データベース名
+          property: host
+      - key: DB_NAME
+        fromDatabase:
+          name: dedede-syllabus-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: dedede-syllabus-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: dedede-syllabus-db
+          property: password
+      - key: DB_PORT
+        fromDatabase:
+          name: dedede-syllabus-db
+          property: port
+      - key: GIN_MODE
+        value: release  # 本番環境用にGIN_MODEを設定
+      - key: TZ
+        value: Asia/Tokyo  # タイムゾーン設定
+
+databases:
+- name: dedede-syllabus-db
+  databaseName: dedede_db  # 初期データベース名
+  user: user  # データベースユーザー名
+  plan: free
+  region: your-region  # 例: singapore, oregon, etc.
+  postgresMajorVersion: "14"  # PostgreSQLのバージョン

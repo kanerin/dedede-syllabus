@@ -1,16 +1,20 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container } from 'react-bootstrap'; // React Bootstrapコンポーネントのインポート
+import { Container } from 'react-bootstrap'; 
 import RegexTest from './pages/RegexTest';
 import SQLTest from './pages/SQLTest';
 import AjaxTest from './pages/AjaxTest';
 import LoginForm from './components/LoginForm';
 import Message from './components/Message';
 import Register from './pages/Register';
-import ResultPage from './pages/ResultPage'; // 結果ページのインポート
+import ResultPage from './pages/ResultPage'; 
 import MyPage from './pages/MyPage';
+import Admin from './pages/Admin'; 
+import ApplyTest from './pages/ApplyTest'; // 受験申請ページのインポート
 
-import NavBar from './components/NavBar'; // ナビバーのインポート
+
+import NavBar from './components/NavBar'; 
 
 function Home() {
   return <h1>Welcome to the Test Pages</h1>;
@@ -21,7 +25,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
 
-  // ローカルストレージからトークンを取得してログイン状態を確認
   useEffect(() => {
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
@@ -46,6 +49,7 @@ function App() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
         localStorage.setItem('user_id', data.user_id);
+
         setMessage(`Welcome, ${data.username}!`);
         setIsLoggedIn(true);
         setUsername(data.username);
@@ -80,8 +84,10 @@ function App() {
             </div>
           } />
           <Route path="/register" element={<Register />} />
-          <Route path="/results" element={<ResultPage />} /> {/* 結果発表ページのルート追加 */}
-          {isLoggedIn && <Route path="/mypage" element={<MyPage />} />} {/* マイページルート */}
+          <Route path="/results" element={<ResultPage />} />
+          {isLoggedIn && <Route path="/mypage" element={<MyPage />} />}
+          {isLoggedIn && <Route path="/admin" element={<Admin />} />} {/* 管理者ページのルート */}
+          <Route path="/apply/:testId" element={<ApplyTest />} /> {/* 受験申請ページのルート */}
         </Routes>
       </Container>
     </Router>
