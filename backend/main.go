@@ -24,7 +24,7 @@ func main() {
             " dbname=" + os.Getenv("DATABASE") + 
             " host=" + os.Getenv("DB_HOST") + 
             " port=" + os.Getenv("PORT") + 
-            " sslmode=disable"
+            " sslmode=require"
 
     // リトライ処理の設定
     maxRetries := 6        // 最大リトライ回数
